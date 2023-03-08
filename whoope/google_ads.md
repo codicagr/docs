@@ -45,14 +45,13 @@ Table columns:
 - `site_id` int(11) [FK: 1 == 'Golden Hall']
 - `content_impression_share` double [refers to: metrics.content_impression_share]
 - `content_rank_lost_impression_share` double [refers to: metrics.content_rank_lost_impression_share]
-- 
 - `cpv_bid` int(11) [refers to: ad_group.cpv_bid_micros]
-- `relative_ctr` double [refers to: metrics.relative_ctr]
-- 
 - `target_cpa_bid_source` varchar(191) [refers to: ad_group.effective_target_cpa_source]
 - `bidding_strategy_id` int(11) [refers to: bidding_strategy.id]
 - `bidding_strategy_name` varchar(191) [refers to: bidding_strategy.name]
+- 
 - `bidding_strategy_type` varchar(191) [refers to: campaign.bidding_strategy_type]
+- 
 - `view_through_conversions` int(11) [refers to: metrics.view_through_conversions]
 - `average_cpm` double [refers to: metrics.average_cpm]
 - `device` varchar(191) [refers to: segments.device]
@@ -82,9 +81,6 @@ Table columns:
 - `active_view_measurable_impressions` int(11) [refers to: metrics.active_view_measurable_impressions]
 - `active_view_ctr` double [refers to: metrics.active_view_ctr]
 - `clicks` int(11) [refers to: metrics.clicks]
-- 
-- `average_position` TYPE [refers to: ]
-- 
 - `conversions_from_interactions_rate` double [refers to: metrics.conversions_from_interactions_rate]
 - `conversions_value` double [refers to: metrics.conversions_value]
 - `search_impression_share` double [refers to: metrics.search_impression_share]
