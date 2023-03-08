@@ -20,7 +20,6 @@ Table columns:
 - `advertising_channel_subtype` varchar(100) [refers to: campaign.advertising_channel_sub_type]
 - `content_budget_lost_impression_share` double [refers to: metrics.content_budget_lost_impression_share]
 - `device` varchar(100) [refers to: segments.device]
-- `deleted_at` timestamp
 - `created_at` timestamp
 - `updated_at` timestamp
 
@@ -55,7 +54,6 @@ Table columns:
 - `view_through_conversions` int(11) [refers to: metrics.view_through_conversions]
 - `average_cpm` double [refers to: metrics.average_cpm]
 - `device` varchar(100) [refers to: segments.device]
-- `deleted_at` timestamp
 - `created_at` timestamp
 - `updated_at` timestamp
 
@@ -93,6 +91,5 @@ Table columns:
 - `quality_score` int(11) [refers to: ad_group_criterion.quality_info.quality_score]
 - `creative_quality_score` varchar(100) [refers to: ad_group_criterion.quality_info.creative_quality_score]
 - `device` varchar(100) [refers to: segments.device]
-- `deleted_at` timestamp
 - `created_at` timestamp
 - `updated_at` timestamp
