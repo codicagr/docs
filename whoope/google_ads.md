@@ -28,7 +28,7 @@ Table columns:
 Table columns:  
 - `id` bigint(20) [PRIMARY KEY]
 - `adgroup_id` bigint(20) [refers to: adgroup.id]
-- `campaign_name` varchar(191) [refers to: adgroup.name]
+- `adgroup_name` varchar(191) [refers to: adgroup.name]
 - `campaign_id` bigint(20) [refers to: campaign.id]
 - `campaign_name` varchar(191) [refers to: campaign.name]
 - `campaign_status` varchar(191) [refers to: campaign.status]
@@ -49,9 +49,7 @@ Table columns:
 - `target_cpa_bid_source` varchar(191) [refers to: ad_group.effective_target_cpa_source]
 - `bidding_strategy_id` int(11) [refers to: bidding_strategy.id]
 - `bidding_strategy_name` varchar(191) [refers to: bidding_strategy.name]
-- 
 - `bidding_strategy_type` varchar(191) [refers to: campaign.bidding_strategy_type]
-- 
 - `view_through_conversions` int(11) [refers to: metrics.view_through_conversions]
 - `average_cpm` double [refers to: metrics.average_cpm]
 - `device` varchar(191) [refers to: segments.device]
@@ -64,12 +62,11 @@ Table columns:
 Table columns:  
 - `id` bigint(20) [PRIMARY KEY]
 - `adgroup_id` bigint(20) [refers to: adgroup.id]
-- `campaign_name` varchar(191) [refers to: adgroup.name]
+- `adgroup_name` varchar(191) [refers to: adgroup.name]
 - `campaign_id` bigint(20) [refers to: campaign.id]
 - `campaign_name` varchar(191) [refers to: campaign.name]
 - `campaign_status` varchar(191) [refers to: campaign.status]
 - `cpc_bid` int(11) [refers to: ad_group_criterion.effective_cpc_bid_micros]
-- `final_urls` text [refers to: ad_group_criterion.final_urls]
 - `impressions` int(11) [refers to: metrics.impressions]
 - `interactions` int(11) [refers to: metrics.interactions]
 - `interaction_rate` double [refers to: metrics.interaction_rate]
