@@ -62,6 +62,7 @@ Table columns:
 Τα rows γίνονται update ή create βάση του primary key ``matomo_adwords_keyword_performance_report_pkey`` που αποτελείται απο τα 'adgroup_id', 'campaign_id', 'site_id', 'reference_date'  
 Table columns:  
 - `id` bigint(20) [PRIMARY KEY]
+- `criteria` varchar(191) [refers to: ad_group_criterion.keyword.text]
 - `adgroup_id` bigint(20) [refers to: adgroup.id]
 - `adgroup_name` varchar(191) [refers to: adgroup.name]
 - `campaign_id` bigint(20) [refers to: campaign.id]
