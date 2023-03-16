@@ -18,7 +18,8 @@ Table columns:
 
 ## meta_campaign_insights
 Ο πίνακας με τα insights για κάθε campaign.  
-Κάθε 5 λεπτά κοιτάει τον πίνακα 'meta_campaigns' και κάνει 3 κλήσεις στο API για κάθε campaign που έχει `` `sync` == 'PENDING' ``.  
+Κάθε 5 λεπτά κοιτάει τον πίνακα 'meta_campaigns' και κάνει 3 κλήσεις στο API για κάθε campaign που έχει `` `sync` == 'PENDING' ``, με date_preset => yesterday.
+Αυτό γίνεται έτσι ώστε να βλέπουμε την εξέλιξη της καμπάνιας στην πάροδο του χρόνου.
 Την 1η φορά γίνεται request στο campaign για τα:  
 ```php
 'fields' => 'social_spend, spend, date_start, date_stop, reach, impressions, clicks, actions, conversions, conversion_values, 
