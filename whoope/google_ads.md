@@ -1,6 +1,7 @@
 ## adwords_campaign_performance_reports
-Ο πίνακας campaigns ενημερώνεται κάθε μέρα στις 09:00 και αφορά results χθεσινή ημερομηνία.
-Τα rows γίνονται update ή create βάση του primary key ``matomo_adwords_campaign_performance_report_pkey`` που αποτελείται απο τα 'campaign_id', 'site_id', 'reference_date'  
+Ο πίνακας campaigns ενημερώνεται κάθε μέρα στις 09:00 και αφορά results χθεσινή ημερομηνία.  
+Τα rows γίνονται update ή create βάση των 'campaign_id', 'site_id', 'reference_date', 'device'  
+Primary key: ``matomo_adwords_campaign_performance_report_pkey`` = ['campaign_id', 'site_id', 'reference_date']  
 Table columns:  
 - `id` bigint(20) [PRIMARY KEY]
 - `campaign_id` bigint(20) [refers to: campaign.id]
@@ -21,11 +22,12 @@ Table columns:
 - `content_budget_lost_impression_share` double [refers to: metrics.content_budget_lost_impression_share]
 - `device` varchar(100) [refers to: segments.device]
 - `created_at` timestamp
-- `updated_at` timestamp
+- `updated_at` timestamp  
 
 ## adwords_adgroup_performance_reports
-Ο πίνακας adgroup ενημερώνεται κάθε μέρα στις 09:15 και αφορά results χθεσινή ημερομηνία.
-Τα rows γίνονται update ή create βάση του primary key ``matomo_adwords_adgroup_performance_report_pkey`` που αποτελείται απο τα 'adgroup_id', 'campaign_id', 'site_id', 'reference_date'  
+Ο πίνακας adgroup ενημερώνεται κάθε μέρα στις 09:15 και αφορά results χθεσινή ημερομηνία.  
+Τα rows γίνονται update ή create βάση των 'adgroup_id', 'campaign_id', 'site_id', 'reference_date', 'device'
+Primary key: ``matomo_adwords_adgroup_performance_report_pkey`` = ['adgroup_id', 'campaign_id', 'site_id', 'reference_date']  
 Table columns:  
 - `id` bigint(20) [PRIMARY KEY]
 - `adgroup_id` bigint(20) [refers to: adgroup.id]
@@ -58,8 +60,9 @@ Table columns:
 - `updated_at` timestamp
 
 ## adwords_keyword_performance_reports
-Ο πίνακας keyword ενημερώνεται κάθε μέρα στις 09:30 και αφορά results χθεσινή ημερομηνία.
-Τα rows γίνονται update ή create βάση του primary key ``matomo_adwords_keyword_performance_report_pkey`` που αποτελείται απο τα 'adgroup_id', 'campaign_id', 'site_id', 'reference_date'  
+Ο πίνακας keyword ενημερώνεται κάθε μέρα στις 09:30 και αφορά results χθεσινή ημερομηνία.  
+Τα rows γίνονται update ή create βάση των 'adgroup_id', 'campaign_id', 'site_id', 'reference_date', 'device'  
+Primary key: ``matomo_adwords_keyword_performance_report_pkey`` = ['adgroup_id', 'campaign_id', 'site_id', 'reference_date']  
 Table columns:  
 - `id` bigint(20) [PRIMARY KEY]
 - `adgroup_id` bigint(20) [refers to: adgroup.id]
