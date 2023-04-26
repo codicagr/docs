@@ -41,7 +41,7 @@ Table columns:
 ``` 
 Την 2η φορά προστίθεται (στο αρχικό request) ``` 'breakdowns' => 'age,gender' ```  
 Την 3η φορά προστίθεται (στο αρχικό request) ``` 'action_breakdowns' => 'action_device' ```  
-Συνολικά γίνονται insert 3 rows για κάθε campaign_id (ένα ανα περίπτωση)  
+Συνολικά γίνονται createOrUpdate 3 rows για κάθε campaign_id στον πίνακα meta_campaign_insights, ενώ στην συνέχεια το `response` θα σπάει στους επιμέρους πίνακες `meta_campaign_insight_actions`, `meta_campaign_insight_conversions`, `meta_campaign_insight_outbound_clicks`.  
 Table columns:  
 - `id` bigint(20) [PRIMARY KEY]
 - `meta_campaign_id` bigint(20) [FOREIGN KEY 'campaign_id' of table 'meta_campaigns']
