@@ -1,5 +1,13 @@
+# Scheduler
+```php 
+$schedule->job(new CampaignsJob($siteSlug = 'ghall', $campaignLimit = 500))->dailyAt('07:00');
+$schedule->job(new CampaignInsightsJob($siteSlug = 'ghall', $campaignLimit = 10))->everyThirtyMinutes();
+```
+
 ## meta_campaigns
-Ο πίνακας με τα διαθέσιμα campaigns ενημερώνεται κάθε μέρα στις 07:00 και τα rows γίνονται update or create ανάλογα με το αν υπάρχουν ή όχι. Τα campaigns γίνονται insert με `` `sync` = 'PENDING' `` και παραμένουν έτσι έως ότου το αντίστοιχο job για τα insights το αλλάξει σε 'COMPLETED'.  
+Ο πίνακας με τα διαθέσιμα campaigns ενημερώνεται κάθε μέρα στις 07:00 και τα rows γίνονται update or create ανάλογα με το αν υπάρχουν ή όχι.  
+Τα campaigns γίνονται insert με `` `sync` = 'PENDING' `` και παραμένουν έτσι έως ότου το αντίστοιχο job για τα insights το αλλάξει σε 'COMPLETED'.  
+Τα campaigns προκειμένουν να γίνουν insert πρέπει να έχουν stop_time μεγαλύτερο ή ίσο της ημερομηνίας που τρέχει το job.  
 Table columns:  
 - `id` bigint(20) [PRIMARY KEY]
 - `sync` varchar(191) [Statuses: 'PENDING', 'COMPLETED']
@@ -17,9 +25,14 @@ Table columns:
 - `updated_at` timestamp
 
 ## meta_campaign_insights
-Ο πίνακας με τα insights για κάθε campaign.  
-Κάθε 5 λεπτά κοιτάει τον πίνακα 'meta_campaigns' και κάνει 3 κλήσεις στο API για κάθε campaign που έχει `` `sync` == 'PENDING' ``, με date_preset => yesterday.
-Αυτό γίνεται έτσι ώστε να βλέπουμε την εξέλιξη της καμπάνιας στην πάροδο του χρόνου.
+Ο πίνακας με τα insights για κάθε campaign. Στόχος είναι να γίνουν 3 API calls για δοθείσα ημερομηνία.  
+Κάθε 30 λεπτά κοιτάει τον πίνακα 'meta_campaigns' και παίρνει όσα campaign έχουν `` `sync` == 'PENDING' `` με limit = 10.**    
+Για να έχουμε την εξέλιξη της κάθε καμπάνιας στην πάροδο του χρόνο ορίζεται μια ημερομηνία έναρξης. Αυτή μπορεί να είναι:  
+- Είτε η  ``Carbon::now()->subMonths(6)``, δηλ. 6 μήνες πίσω απο το τώρα, 
+- είτε η ``MetaCampaignInsight::where('meta_campaign_id', $campaign->campaign_id)->orderBy('date_start', 'desc')->first()``, δηλ. η ημερομηνία για την οποία έχουμε αποθηκευέμνο το νεότερο api call.
+Σαν ημερομηνία έναρξης επιλέγεται ότι είναι νεότερο απο τις δύο. 
+Στο time frame που έχει τώρα οριστεί, γίνονται 3 API calls/ημερομηνία ξεκινώντας είτε από την ημερομηνία έναρξης έως την χθεσινή ημερομηνία.  
+
 Την 1η φορά γίνεται request στο campaign για τα:  
 ```php
 'fields' => 'social_spend, spend, date_start, date_stop, reach, impressions, clicks, actions, conversions, conversion_values, 
