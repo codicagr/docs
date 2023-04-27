@@ -59,7 +59,7 @@ Table columns:
 Τα endpoinds για αυτούς τους πίνακες δίνουν διαφορετικά δεδομένα.
 - Γίνεται update το status στον meta_instagram_media βάση του meta_instagram_media_insight.crated_time: 
   - Αν created_time < SHORT_TERM_EXPIRATION ( = 30 days )  τότε sync = 'PENDING'
-  - Αν SHORT_TERM_EXPIRATION < created_time < LIFETIME_EXPIRATION ( = 362 days ) τότε sync = 'TO_BE_COMPLETED'
+  - Αν SHORT_TERM_EXPIRATION < created_time < LIFETIME_EXPIRATION ( = 365 days ) τότε sync = 'TO_BE_COMPLETED'
   - Αν created_time > LIFETIME_EXPIRATION τότε sync = 'COMPLETED' ή αν το media είναι story που τότε το LIFETIME_EXPIRATION = 24 hours. 
  
 Table columns:  
