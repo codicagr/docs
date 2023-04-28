@@ -4,7 +4,7 @@ $schedule->job(new CampaignsJob($siteSlug = 'ghall', $campaignLimit = 500))->dai
 $schedule->job(new CampaignInsightsJob($siteSlug = 'ghall', $campaignLimit = 10))->everyTenMinutes();
 ```
 
-## meta_campaigns / CampaignsJo
+## meta_campaigns / CampaignsJob
 Ο πίνακας με τα διαθέσιμα campaigns ενημερώνεται κάθε μέρα στις 07:00 και τα rows γίνονται update or create ανάλογα με το αν υπάρχουν ή όχι.  
 Γίνεται ένα API request στο /campaigns endpoint. Τα campaigns προκειμένουν να γίνουν insert πρέπει να έχουν stop_time είτε μεγαλύτερο της ημερομηνίας που τρέχει το job είτε να είναι null (το null σημαίνει οτι τρέχει χωρίς να λήγει). Για κάθε campaign που γίνεται insert/update φτίαχνονται και τα αντίστοιχα requests που θα γίνουν από το CampaignInsightsJob στο /insights endpoint, τα οποία αποθηκεύονται στον πίνακ meta_campaign_insight_queues.  
 Στο 1ο request που φτίαχνεται, έχουμε τα default πεδία για την κλήση του API στο campaign:  
@@ -52,7 +52,7 @@ Table columns:
 - `id` bigint(20) [PRIMARY KEY]
 - `meta_campaign_id` bigint(20) [FOREIGN KEY 'campaign_id' of table 'meta_campaigns']
 - `meta_campaign_insight_queue_id` bigint(20) [FOREIGN KEY 'id' of table 'meta_campaign_insight_queues']
-- `social_spend`, `spend`, `date_start`,`date_stop`, `reach`, `impressions`, `clicks`, `conversion_values`, `buying_type`, `inline_post_engagement`, `inline_link_clicks`, `outbound_clicks`, `frequency`, `age_targeting`, `converted_product_quantity`, `converted_product_value` [API: https://developers.facebook.com/docs/marketing-api/reference/ad-campaign-group/insights/]
+- `social_spend`, `spend`, `date_start`,`date_stop`, `reach`, `impressions`, `clicks`, `conversion_values`, `buying_type`, `inline_post_engagement`, `inline_link_clicks`, `outbound_clicks`, `frequency`, `age_targeting`, `converted_product_quantity`, `converted_product_value` <a href="http://example.com](https://developers.facebook.com/docs/marketing-api/reference/ad-campaign-group/insights/" target="_blank">[API Docs]</a>
 - `deleted_at` timestamp 
 - `created_at` timestamp 
 - `updated_at` timestamp
