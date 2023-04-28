@@ -52,7 +52,7 @@ Table columns:
 - `id` bigint(20) [PRIMARY KEY]
 - `meta_campaign_id` bigint(20) [FOREIGN KEY 'campaign_id' of table 'meta_campaigns']
 - `meta_campaign_insight_queue_id` bigint(20) [FOREIGN KEY 'id' of table 'meta_campaign_insight_queues']
-- `social_spend`, `spend`, `date_start`,`date_stop`, `reach`, `impressions`, `clicks`, `conversion_values`, `buying_type`, `inline_post_engagement`, `inline_link_clicks`, `outbound_clicks`, `frequency`, `age_targeting`, `converted_product_quantity`, `converted_product_value` <a href="http://example.com](https://developers.facebook.com/docs/marketing-api/reference/ad-campaign-group/insights/" target="_blank">[API Docs]</a>
+- `social_spend`, `spend`, `date_start`,`date_stop`, `reach`, `impressions`, `clicks`, `conversion_values`, `buying_type`, `inline_post_engagement`, `inline_link_clicks`, `outbound_clicks`, `frequency`, `age_targeting`, `converted_product_quantity`, `converted_product_value` <a href="https://developers.facebook.com/docs/marketing-api/reference/ad-campaign-group/insights/" target="_blank">[API Docs]</a>
 - `deleted_at` timestamp 
 - `created_at` timestamp 
 - `updated_at` timestamp
