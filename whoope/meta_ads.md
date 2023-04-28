@@ -1,16 +1,22 @@
 # Scheduler
 ```php 
 $schedule->job(new CampaignsJob($siteSlug = 'ghall', $campaignLimit = 500))->dailyAt('07:00');
-$schedule->job(new CampaignInsightsJob($siteSlug = 'ghall', $campaignLimit = 10))->everyThirtyMinutes();
+$schedule->job(new CampaignInsightsJob($siteSlug = 'ghall', $campaignLimit = 10))->everyTenMinutes();
 ```
 
-## meta_campaigns
+## meta_campaigns / CampaignsJo
 Ο πίνακας με τα διαθέσιμα campaigns ενημερώνεται κάθε μέρα στις 07:00 και τα rows γίνονται update or create ανάλογα με το αν υπάρχουν ή όχι.  
-Τα campaigns γίνονται insert με `` `sync` = 'PENDING' `` και παραμένουν έτσι έως ότου το αντίστοιχο job για τα insights το αλλάξει σε 'COMPLETED'.  
-Τα campaigns προκειμένουν να γίνουν insert πρέπει να έχουν stop_time μεγαλύτερο ή ίσο της ημερομηνίας που τρέχει το job.  
+Γίνεται ένα API request στο /campaigns endpoint. Τα campaigns προκειμένουν να γίνουν insert πρέπει να έχουν stop_time είτε μεγαλύτερο της ημερομηνίας που τρέχει το job είτε να είναι null (το null σημαίνει οτι τρέχει χωρίς να λήγει). Για κάθε campaign που γίνεται insert/update φτίαχνονται και τα αντίστοιχα requests που θα γίνουν από το CampaignInsightsJob στο /insights endpoint, τα οποία αποθηκεύονται στον πίνακ meta_campaign_insight_queues.  
+Στο 1ο request που φτίαχνεται, έχουμε τα default πεδία για την κλήση του API στο campaign:  
+```php
+'fields' => 'social_spend, spend, date_start, date_stop, reach, impressions, clicks, actions, conversions, conversion_values, 
+            buying_type, inline_post_engagement, inline_link_clicks, outbound_clicks, frequency, age_targeting, 
+            converted_product_quantity, converted_product_value'.
+``` 
+Στο 2ο προστίθεται (στο αρχικό request) ``` 'breakdowns' => 'age,gender' ```  
+Στο 3ο προστίθεται (στο αρχικό request) ``` 'action_breakdowns' => 'action_device' ```  
 Table columns:  
 - `id` bigint(20) [PRIMARY KEY]
-- `sync` varchar(191) [Statuses: 'PENDING', 'COMPLETED']
 - `name` varchar(191) [API: Campaign's name]
 - `campaign_id` bigint(20) [API: Campaign's id]
 - `status` varchar(191) [API: A spend cap for the campaign, such that it will not spend more than this cap. Expressed as integer value of the subunit in your currency]
@@ -24,29 +30,67 @@ Table columns:
 - `created_at` timestamp
 - `updated_at` timestamp
 
-## meta_campaign_insights
-Ο πίνακας με τα insights για κάθε campaign. Στόχος είναι να γίνουν 3 API calls για δοθείσα ημερομηνία.  
-Κάθε 30 λεπτά κοιτάει τον πίνακα 'meta_campaigns' και παίρνει όσα campaign έχουν `` `sync` == 'PENDING' `` με limit = 10.**    
-Για να έχουμε την εξέλιξη της κάθε καμπάνιας στην πάροδο του χρόνο ορίζεται μια ημερομηνία έναρξης. Αυτή μπορεί να είναι:  
-- Είτε η  ``Carbon::now()->subMonths(6)``, δηλ. 6 μήνες πίσω απο το τώρα, 
-- είτε η ``MetaCampaignInsight::where('meta_campaign_id', $campaign->campaign_id)->orderBy('date_start', 'desc')->first()``, δηλ. η ημερομηνία για την οποία έχουμε αποθηκευέμνο το νεότερο api call.
-Σαν ημερομηνία έναρξης επιλέγεται ότι είναι νεότερο απο τις δύο. 
-Στο time frame που έχει τώρα οριστεί, γίνονται 3 API calls/ημερομηνία ξεκινώντας είτε από την ημερομηνία έναρξης έως την χθεσινή ημερομηνία.  
-
-Την 1η φορά γίνεται request στο campaign για τα:  
-```php
-'fields' => 'social_spend, spend, date_start, date_stop, reach, impressions, clicks, actions, conversions, conversion_values, 
-            buying_type, inline_post_engagement, inline_link_clicks, outbound_clicks, frequency, age_targeting, 
-            converted_product_quantity, converted_product_value'.
-``` 
-Την 2η φορά προστίθεται (στο αρχικό request) ``` 'breakdowns' => 'age,gender' ```  
-Την 3η φορά προστίθεται (στο αρχικό request) ``` 'action_breakdowns' => 'action_device' ```  
-Συνολικά γίνονται createOrUpdate 3 rows για κάθε campaign_id στον πίνακα meta_campaign_insights, ενώ στην συνέχεια το `response` θα σπάει στους επιμέρους πίνακες `meta_campaign_insight_actions`, `meta_campaign_insight_conversions`, `meta_campaign_insight_outbound_clicks`.  
+## meta_campaign_insight_queues
+Αποθηκεύονται τα requests πριν γίνουν και αφού γίνουν στο ίδιο row. Αν το CampaignInsightsJob εκτελέσει και αποθηκεύσει επιτυχώς το request τότε γεμίζει το completed_at.
 Table columns:  
 - `id` bigint(20) [PRIMARY KEY]
 - `meta_campaign_id` bigint(20) [FOREIGN KEY 'campaign_id' of table 'meta_campaigns']
 - `request` text [The request made to the Graph API]
-- `response` text [The response from Graph API (nullable)]
+- `response` text [The response from Graph API]
+- `completed_at` timestamp [If null then requested has not been completed]
+- `created_at` timestamp
+- `updated_at` timestamp
+
+## meta_campaign_insights / CampaignInsightsJob
+Ο πίνακας με τα insights για κάθε campaign.  
+Κάθε 10 λεπτά κοιτάει τον πίνακα 'meta_campaign_insight_queues' και παίρνει όσα campaign έχουν `` `completed_at` == null `` με limit = 3.    
+Αν και το `` `response` == null `` τότε σημαίνει πως το API call δεν έχει γίνει ποτέ και οπότε το εκτελεί (στο /insights endpoint).  
+Έχοντας το response, γίνεται updateOrCreate στον πίνακα meta_campaign_insights.  
+Ένα response αν έχει breakdowns ή action_breakdowns επιμερίζεται σε πολλαπλά rows στον πίνακα.  
+Ενώ για κάθε response αν έχει τιμές τα πεδία `actions`, `conversions` είτε `outbound_clicks` τότε η τιμή τους θα πάει στους αντίστοιχους πίνακες `meta_campaign_insight_actions`, `meta_campaign_insight_conversions`, `meta_campaign_insight_outbound_clicks`.  
+Table columns:  
+- `id` bigint(20) [PRIMARY KEY]
+- `meta_campaign_id` bigint(20) [FOREIGN KEY 'campaign_id' of table 'meta_campaigns']
+- `meta_campaign_insight_queue_id` bigint(20) [FOREIGN KEY 'id' of table 'meta_campaign_insight_queues']
+- `social_spend`, `spend`, `date_start`,`date_stop`, `reach`, `impressions`, `clicks`, `conversion_values`, `buying_type`, `inline_post_engagement`, `inline_link_clicks`, `outbound_clicks`, `frequency`, `age_targeting`, `converted_product_quantity`, `converted_product_value` [API: https://developers.facebook.com/docs/marketing-api/reference/ad-campaign-group/insights/]
+- `deleted_at` timestamp 
+- `created_at` timestamp 
+- `updated_at` timestamp
+
+## meta_campaign_insight_actions
+updateOrCreate `value` based on `insights_id`, `action_breakdown`, `action_device`, `action_type`
+Table columns:  
+- `id` bigint(20) [PRIMARY KEY]
+- `insights_id` bigint(20) [FOREIGN KEY 'id' of table 'meta_campaign_insights']
+- `action_breakdown` varchar(191) nullable
+- `action_device` varchar(191) nullable
+- `action_type` varchar(191) nullable
+- `value` int(11)
+- `deleted_at` timestamp 
+- `created_at` timestamp 
+- `updated_at` timestamp
+
+## meta_campaign_insight_conversions
+updateOrCreate `value` based on `insights_id`, `action_breakdown`, `action_device`, `action_type`
+Table columns:  
+- `id` bigint(20) [PRIMARY KEY]
+- `insights_id` bigint(20) [FOREIGN KEY 'id' of table 'meta_campaign_insights']
+- `action_breakdown` varchar(191) nullable
+- `action_device` varchar(191) nullable
+- `action_type` varchar(191) nullable
+- `value` int(11)
+- `deleted_at` timestamp 
+- `created_at` timestamp 
+- `updated_at` timestamp
+
+## meta_campaign_insight_outbound_clicks
+updateOrCreate `value` based on `insights_id`, `action_breakdown`, `name`
+Table columns:  
+- `id` bigint(20) [PRIMARY KEY]
+- `insights_id` bigint(20) [FOREIGN KEY 'id' of table 'meta_campaign_insights']
+- `action_breakdown` varchar(191) nullable
+- `name` varchar(191) nullable
+- `value` int(11)
 - `deleted_at` timestamp 
 - `created_at` timestamp 
 - `updated_at` timestamp
