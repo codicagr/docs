@@ -81,10 +81,11 @@ Table columns:
 - `id` bigint(20) [PRIMARY KEY]
 - `meta_instagram_media_id` bigint(20) [FOREIGN KEY 'media_id' of table 'meta_instagram_media']
 - `media_type` varchar(191) ['CAROUSEL_ALBUM','IMAGE', 'VIDEO' ]
-- `carousel_album_impressions` int(11) [API: Total number of times the album IG Media object has been seen.]
-- `carousel_album_reach` int(11) [API: Total number of unique Instagram accounts that have seen the album IG Media object.]
-- `carousel_album_saved` int(11) [API: Total number of unique Instagram accounts that have saved the album IG Media object.]
-- `carousel_album_video_views` int(11) [API: Total number of unique Instagram accounts that have viewed video IG Media within the album.]
+- `engagement` int(11) [API:  Total number of likes and IG Comments on the album IG Media object. or Sum of likes_count, comment_count, and saved counts on the IG Media.]
+- `impressions` int(11) [API:  Total number of times the IG Media object has been seen.]
+- `reach` int(11) [API:  Total number of unique Instagram accounts that have seen the IG Media object.]
+- `saved` int(11) [API:  Total number of unique Instagram accounts that have saved the IG Media object.]
+- `video_views` int(11) [API:  Total number of times the video IG Media has been seen. For album IG Media, the number of times all videos within the album have been seen.]
 - `deleted_at` timestamp 
 - `created_at` timestamp 
 - `updated_at` timestamp
