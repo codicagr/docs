@@ -68,9 +68,11 @@ Table columns:
 - `like_count` int [Total count of reactions]
 - `comments_count` int [Total count of comments]
 - `media_type` varchar(191) [API: Media type can be CAROUSEL_ALBUM, IMAGE, or VIDEO.]
-- `media_type` varchar(191) [API: Media type can be REELS, STORY, FEED or AD.]
+- `media_product_type` varchar(191) [API: Media product type can be REELS, STORY, FEED or AD.]
+- `caption` text [API: Caption. Excludes album children. The @ symbol is excluded, unless the app user can perform admin-equivalent tasks on the Facebook Page connected to the Instagram account used to create the caption.]
 - `created_time` datetime [The media's created time]
-- `permalink` varchar(191) [The media's url]
+- `permalink` varchar(191) [API: Permanent URL to the media.]
+- `thumbnail_url` text [API: Media thumbnail URL. Only available on VIDEO media.]
 - `deleted_at` timestamp 
 - `created_at` timestamp 
 - `updated_at` timestamp
