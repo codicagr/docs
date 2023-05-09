@@ -40,6 +40,7 @@ Table columns:
 - `comments` int [Total count of comments]
 - `shares` int [Total count of shares]
 - `clicks` int [Total count of clicks]
+- `message` text [The message written in the post]
 - `post_impressions_paid_lifetime` int [API: The number of times your Page's post entered a person's screen through paid distribution such as an ad.]
 - `post_impressions_organic_lifetime` int [API: The number of times your Page's posts entered a person's screen through unpaid distribution.]
 - `created_time` datetime [The post's created time]
