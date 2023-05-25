@@ -7,6 +7,9 @@ Table columns:
 - `site_id` int(11) [ 1 == 'Golden Hall']
 - `page_id` bigint(20) [The unique facebook page account id]
 - `fan_count_lifetime` bigint(20) [The total likes of the page at the moment]
+- `page_impressions_unique_day` bigint(20) [API: The number of people who had any content from your Page or about your Page enter their screen. This includes posts, stories, check-ins, ads, social information from people who interact with your Page and more.]
+- `page_impressions_unique_week` bigint(20) 
+- `page_impressions_unique_days_28` bigint(20)
 - `page_impressions_day` bigint(20) [API: The number of times any content from your Page or about your Page entered a person's screen.]
 - `page_impressions_week` bigint(20) 
 - `page_impressions_days_28` bigint(20)
