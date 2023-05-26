@@ -9,7 +9,7 @@ Route::get('testing/command', function () {
 ```
 
 ## Available Commands
-- Entity (Up/Down) Command
+- [Entity (Up/Down) Command](#entity-pseudo-moduletype)
 - PseudoModel (Up/Down) Command
 - ModuleType (Up/Down) Command
 - Explore Packages Command
@@ -17,7 +17,7 @@ Route::get('testing/command', function () {
 - Ecommerce Install Command
 - Sitemap Command
 
-# Entity, PseudoModel, ModuleType (Up/Down) Commands
+# <a name="entity-pseudo-moduletype">Entity, PseudoModel, ModuleType (Up/Down) Commands</a>
 Τα 3 πρώτα commands (6 στο σύνολο με τις ανάποδες διαδικασίες), έχουν την ίδια φιλοσοφία. Να φτιάξω/καταστρέψω ένα Entity, PseudoModel ή ModuleType.
 Αυτά τα commands μπορούμε να τα τρέξουμε απο το admin μέσω `CMS Managment > Commands`.  
 Στο input πεδίο βάζουμε το όνομα που πρέπει ιδανικά να είναι στον ενικό και με κενό στην μέση.  
