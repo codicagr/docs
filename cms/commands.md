@@ -10,12 +10,12 @@ Route::get('testing/command', function () {
 
 ## Available Commands
 - [Entity (Up/Down) Command](#entity-pseudo-moduletype)
-- PseudoModel (Up/Down) Command
-- ModuleType (Up/Down) Command
-- Explore Packages Command
-- Package (Install/Publish/Uninstall) Command
-- Ecommerce Install Command
-- Sitemap Command
+- [PseudoModel (Up/Down) Command](#entity-pseudo-moduletype)
+- [ModuleType (Up/Down) Command](#entity-pseudo-moduletype)
+- [Explore Packages Command](#explore)
+- [Package (Install/Publish/Uninstall) Command](#package)
+- [Ecommerce Install Command](#ecommerce)
+- [Sitemap Command](#sitemap)
 
 # <a name="entity-pseudo-moduletype">Entity, PseudoModel, ModuleType (Up/Down) Commands</a>
 Τα 3 πρώτα commands (6 στο σύνολο με τις ανάποδες διαδικασίες), έχουν την ίδια φιλοσοφία. Να φτιάξω/καταστρέψω ένα Entity, PseudoModel ή ModuleType.
@@ -32,7 +32,7 @@ Route::get('testing/command', function () {
 Σε όλα αυτά οι επιμέρους συναρτήσεις επιστρέφουν void προκειμένου να τρέχουν όλα είτε ολοκληρώθηκε κάτι επιτυχώς είτε όχι.  
 Π.χ. Μπορεί τα permissions να υπάρχουν ήδη, δεν θα γίνει break αλλά αντιθέτως θα υπάρχει αντίστοιχο μήνυμα ότι βρέθηκαν τα permissions και άρα δεν χρειάζεται να φτιαχτούν.
 
-# Explore Packages Command
+# <a name="explore">Explore Packages Command</a>
 Αυτό είναι ένα feature που το βρίσκουμε μέσα στο index component του entity Packages.  
 Αφού κάνουμε κάποιο πακέτο require μέσω composer τότε θα χρειαστεί να μπει και εκεί προκειμένου να "μπει" στο CMS.  
 To composer require απλά θα μας φέρει τον κώδικα στο /vendor, δεν σημαίνει ότι μπορούμε να το χρησιμοποιήσουμε μέσα στην εφαρμογή.  
@@ -40,7 +40,7 @@ To composer require απλά θα μας φέρει τον κώδικα στο /
 Πατώντας λοιπόν το αντίστοιχο κουμπί στα Packages, το command θα ψάξει για πακέτα που είναι απο codicagr/ και δεν υπάρχουν στο entity Packages.  
 Αν βρεθούν τέτοια πακέτα, το command παίρνει το config του πακέτου και δημιουργεί ενα row στα Packages για καθένα από αυτά. Τα πακέτα αυτά μένουν ως disabled μέχρις ότου γίνει κάποιο αντίστοιχο installation.
 
-# Package (Install/Publish/Uninstall) Command
+# <a name="package">Package (Install/Publish/Uninstall) Command</a>
 Κάθε πακέτο έχει και τα src/Console/Commands/InstallCommand.php, src/Console/Commands/PublishCommand.php, src/Console/Commands/UninstallCommand.php.  
 Αυτές είναι κλάσεις που κάνουν extend τις abstract κλάσεις PackageΙnstallCommand, PackagePublishCommand, PackageUninstallCommand αντίστοιχα.
 Οι κλάσεις αυτές είναι abstract γιατί το ``protected $signature`` πρέπει να πηγαίνει ανά πακέτο & ανά command για να λειτουργούν σωστά.
@@ -64,11 +64,11 @@ if($this->checkRequirements())                    //!$this->isPackageRequired()
 By default, τα migrations είναι publishable μέσω του InstallCommand::publishEssentials().
 Η διαφορά με αυτό το function είναι οτι στο publish command έχουμε προαιρετικό publish αρχείων.
 
-# Ecommerce Install Command
+# <a name="ecommerce">Ecommerce Install Command</a>
 Για να γίνει installation όλων των packages του eCommerce εφόσον υπάρχουν στον vendror, δηλ. εφόσον έχουν γίνει require από composer.  
 Με το προαιρετικό option --cleanInstall=true, πρώτα θα γίνουν όλα uninstall και στην συνέχεια install.  
 Σε καινούργιο περιβάλλον μπορούμε να τρέξουμε πρώτα το command ExplorePackagesCommand και στη συνέχεια αφού μπουν στα Packages τότε να τρέξουμε αυτό το command για να μπουν όλα με την "σωστή" σειρά μιας και κάποιο πακέτο μπορεί να κάνει require κάποιο άλλο.  
 
-# Sitemap Command
+# <a name="sitemap">Sitemap Command</a>
 //
 
