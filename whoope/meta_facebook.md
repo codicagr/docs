@@ -47,6 +47,7 @@ Table columns:
 - `post_impressions_paid_lifetime` int [API: The number of times your Page's post entered a person's screen through paid distribution such as an ad.]
 - `post_impressions_organic_lifetime` int [API: The number of times your Page's posts entered a person's screen through unpaid distribution.]
 - `post_impressions_unique` int [API: The number of people who had your Page's post enter their screen. Posts include statuses, photos, links, videos and more.]
+- `post_engaged_users` int [API: The number of people who clicked anywhere in your posts.]
 - `created_time` datetime [The post's created time]
 - `updated_time` datetime [The post's updated time]
 - `permalink_url` varchar(191) [The post's url]
