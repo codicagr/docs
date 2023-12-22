@@ -1,1 +1,0 @@
-General screenshots for docs
