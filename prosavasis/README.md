@@ -202,7 +202,7 @@ Body    :
     "appId": "703",
     "token": "ΧΧΧΧΧΧΧΧΧΧΧΧΧΧΧΧΧΧΧΧΧΧΧΧΧ",
     "key": "37061",
-    "locateinfo" : "SALDOC:FINCODE"
+    "locateinfo" : "SALDOC:FINCODE,MYDATAQRURL"
 }
 
 <strong><ins>RESPONSE</ins></strong>
@@ -212,7 +212,8 @@ Body    :
     "data": {
         "SALDOC": [
             {
-                "FINCODE": "ΑΠΥ0009255"
+                "FINCODE": "ΑΠΥ0009255",
+                "MYDATAQRURL": "https://mydatapi.aade.gr/myDATA/TimologioQR/"
             }
         ]
     },
